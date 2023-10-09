@@ -1,18 +1,14 @@
 ARG NODE_VERSION=18.7.0
 
-FROM node:${NODE_VERSION} as client
+FROM node:${NODE_VERSION}-bullseye as client
 
-WORKDIR app/client
-
-COPY ./package*.json ./
-
-RUN npm install
+WORKDIR /app/client
 
 COPY . .
 
-RUN npm run build
+RUN npm install && npm run build
 
-FROM nginx:latest
-COPY --from=client /app/client/build /usr/share/nginx/html
+CMD ["npm", "start"]
 
-CMD ["nginx", "-g", "daemon off;"]
+EXPOSE 3000
+
