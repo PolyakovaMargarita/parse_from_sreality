@@ -1,1 +1,1 @@
-export const GET_DATA = "/";
+export const GET_DATA = "api";

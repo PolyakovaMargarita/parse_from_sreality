@@ -18,25 +18,35 @@ interface HomeProps {
 
 const Home: FC<HomeProps> = () => {
     const [data, setData] = useState([])
-
-    const getDataInfo = async () => {
+    const [lastPage, setLastPage] = useState<number>(10)
+    const [isLoading, setIsLoading] = useState(true);
+    const getDataInfo = async (page?: number) => {
+        setIsLoading(true);
         try {
-            const res = await get_data()
-            setData(res.data)
+            const res = await get_data(page ? page : 1)
+            setLastPage(res.data.lastPage)
+            setData(res.data.data)
         } catch (error) {
             console.log("Data Info error: ", error)
+        } finally {
+            setIsLoading(false);
         }
-    } 
-
-    console.log("data", data)
+    }
 
     useEffect(() => {
-        data && data.length === 0 && getDataInfo()
-    }, [data])
+        data.length === 0 && getDataInfo();
+    }, []);
+
 
     return (
         <div>
-            <HomeTab dataItems={data}/>
+            {isLoading && data.length === 0 ? (
+                <div className="loading-animation">
+                    <div className="loading-circle"></div>
+                </div>
+            ) : (
+                <HomeTab dataItems={data} getDataInfo={getDataInfo} setLastPage={setLastPage} lastPage={lastPage} />
+            )}
         </div>
     )
 }

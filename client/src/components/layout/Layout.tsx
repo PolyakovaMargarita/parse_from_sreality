@@ -10,15 +10,25 @@ interface LayoutProps {
 
 const Layout: FC<LayoutProps> = () => {
     const screenHeight = window.innerHeight;
-    console.log(`Высота экрана: ${screenHeight}px`);
+
     return (
-        <div className={s.container} style={{ height: `${screenHeight}px` }}>
-            <Header />
-            <div className={s.containerOutlet}>
-                <Outlet />
+        window.innerWidth > 880 ? (
+            <div className={s.container} style={{ height: `${screenHeight}px` }}>
+                <Header />
+                <div className={s.containerOutlet}>
+                    <Outlet />
+                </div>
+                <Footer />
             </div>
-            <Footer />
-        </div>
+        ) : (
+            <div className={s.container}>
+                <Header />
+                <div className={s.containerOutlet}>
+                    <Outlet />
+                </div>
+                <Footer />
+            </div>
+        )
     )
 }
 

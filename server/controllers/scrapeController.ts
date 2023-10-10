@@ -21,11 +21,27 @@ class scrapeController {
 
   async getAll(req: express.Request, res: express.Response) {
     try {
-      const extractedDataList = await ExtractedData.findAll();
-      console.log("data", extractedDataList)
-      return res.json(extractedDataList);
+      const page: number = Number(req.query.page) || 1;
+      const itemsPerPage: number = 10;
+      const offset: number = (page - 1) * itemsPerPage;
+
+      const result = await ExtractedData.findAndCountAll({
+        offset,
+        limit: itemsPerPage,
+      });
+  
+      const { count, rows } = result;
+
+      res.json({
+        totalItems: count,
+        currentPage: page,
+        itemsPerPage,
+        lastPage: Math.ceil(count / itemsPerPage),
+        data: rows,
+      });
     } catch (error) {
       console.error('Get All ExtractedData error:', error);
+      res.status(500).json({ error: 'Internal server error' });
     }
   }
 }

@@ -1,6 +1,3 @@
-<h3 style="color:green">To get env for server use lib dotenv and use</h3>
+To start project 
 
-
-`npm install dotenv`
-
-`require('dotenv').config({ path: '../.env' });`
+`docker-compose up`

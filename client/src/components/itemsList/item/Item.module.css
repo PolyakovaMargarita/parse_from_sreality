@@ -1,10 +1,27 @@
 .container {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+    padding-left: 100px;
+    padding-right: 100px;
     width: 70%;
     gap: 20px;
-    height: 35px;
+    min-height: 60px;
+}
+
+.id {
+    width: 10%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    gap: 7px;
 }
 
 .even {
@@ -28,7 +45,29 @@
 }
 
 .title {
-    color: blue;
-    font-size: 18px;
-    font-weight: 400;
+    display: flex;
+    gap: 5px;
+    width: 100%;
+    line-height: normal;
+    color: rgb(15, 15, 15);
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.imageInfo {
+    display: flex;
+    gap: 5px;
+}
+
+@media (max-width: 880px) {
+    .container {
+        padding: 10px;
+        gap: 5px;
+    }
+    .title {
+        flex-direction: column;
+    }
+    .imageInfo {
+        flex-direction: column
+    }
 }

@@ -1,0 +1,7 @@
+svg {
+  flex-shrink: 0;
+}
+
+.svg .clicked {
+  cursor: pointer;
+}

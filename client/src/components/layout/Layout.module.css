@@ -11,3 +11,9 @@
     height: 100%;
     padding: 0 50px;    
 }
+
+@media (max-width: 880px) {
+    .containerOutlet {
+        padding: 0px;
+    }
+}
