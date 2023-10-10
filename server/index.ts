@@ -28,7 +28,6 @@ const sequelize = new Sequelize({
   password: 'password',
 });
 
-
 initExtractedData(sequelize);
 
 async function authenticate() {
@@ -40,8 +39,7 @@ async function authenticate() {
   }
 }
 
-
-const PORT = process.env.PORT || 54321;
+const PORT = process.env.PORT || 3001;
 
 const app: Express = express();
 app.use(cors());
@@ -74,6 +72,10 @@ async function main() {
     console.error('Error scraping data:', error);
   }
 }
+
+app.get("/", (req, res) => {
+  res.status(200).json({message: "Working!!!"})
+})
 
 const start = async () => {
   try {

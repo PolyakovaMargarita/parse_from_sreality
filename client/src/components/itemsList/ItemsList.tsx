@@ -5,7 +5,7 @@ import s from "./ItemsList.module.css"
 interface Items {
     id: number;
     title: string;
-    imageUrl: string;
+    image_src: string;
 }
 
 interface ItemsListProps {
