@@ -14,7 +14,8 @@ class ScrappedModel {
         });
 
         const total = await prisma.scrapped.count();
-        return {data: scrapped, total}
+        const totalPades = total / per_page
+        return {data: scrapped, total: totalPades}
     }
 }
 

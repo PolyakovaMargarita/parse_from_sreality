@@ -15,7 +15,7 @@ async function seedScrapperData() {
             });
             console.log('Data seeded successfully')
         } catch (e) {
-            console.log('Error seeding data')
+            console.log('Error seeding data', e)
         }
     }
 }

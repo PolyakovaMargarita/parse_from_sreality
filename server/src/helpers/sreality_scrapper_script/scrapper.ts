@@ -43,77 +43,41 @@ async function closeBrowser(browser: Browser | null): Promise<void> {
     }
 }
 
-// export async function runScraper(baseUrl: string, needItems: number = 10): Promise<ExtractedData[]> {
-//     const { browser, page } = await initializeBrowser();
-//     let data: ExtractedData[] = [];
-//     let pageNum = 1;
-
-//     try {
-//         while (data.length < needItems) {
-//             let isItems = data.length
-//             await page.goto(`${process.env.BASE_URL}/search/for-sale/apartments?page=${pageNum}`);
-//             console.log('data.length', data.length);
-
-//             const divs = await page.$$('div.property');
-//             data = await processDivs(page, divs, data, needItems);
-//             data.length > isItems && pageNum++;
-//             console.log('pageNum', pageNum);
-
-//             data.length < 40 && await new Promise(resolve => setTimeout(resolve, 5000));
-//             data.length > 40 && data.length < 140 && await new Promise(resolve => setTimeout(resolve, 1000));
-//             data.length > 140 && data.length < 240 && await new Promise(resolve => setTimeout(resolve, 2000));
-//             data.length > 300 && data.length < 500 && await new Promise(resolve => setTimeout(resolve, 2985));
-//             // data.length < 140 && await new Promise(resolve => setTimeout(resolve, 1000));
-//         }
-
-//         console.log('scraped data:', data.length);
-//         return data;
-//     } catch (error) {
-//         console.error('Error:', error);
-//         return [];
-//     } finally {
-//         await closeBrowser(browser);
-//     }
-// }
-
 export async function runScraper(baseUrl: string, needItems: number = 10): Promise<ExtractedData[]> {
     const { browser, page } = await initializeBrowser();
     let data: ExtractedData[] = [];
     let pageNum = 1;
-    const timeout = 3 * 60 * 1000; // 3 минуты в миллисекундах
+    const startTime = Date.now();
+    const timer = 180000
 
-    const scrapeData = async () => {
+
+    try {
         while (data.length < needItems) {
-            let isItems = data.length;
+            const currentTime = Date.now();
+            const elapsedTime = currentTime - startTime;
+
+            if (elapsedTime >= timer) {
+                break;
+            }
+
+            let isItems = data.length
             await page.goto(`${process.env.BASE_URL}/search/for-sale/apartments?page=${pageNum}`);
-            console.log('data.length', data.length);
 
             const divs = await page.$$('div.property');
             data = await processDivs(page, divs, data, needItems);
             data.length > isItems && pageNum++;
             console.log('pageNum', pageNum);
+            console.log('data.length', data.length);
 
             await new Promise(resolve => setTimeout(resolve, 1000));
-            // data.length > 40 && data.length < 140 && await new Promise(resolve => setTimeout(resolve, 1000));
-            // data.length > 140 && data.length < 240 && await new Promise(resolve => setTimeout(resolve, 2000));
-            // data.length > 300 && data.length < 500 && await new Promise(resolve => setTimeout(resolve, 2985));
         }
-    };
-
-    const timeoutPromise = new Promise<ExtractedData[]>((resolve, reject) => {
-        setTimeout(() => {
-            reject(new Error('Timeout exceeded'));
-        }, timeout);
-    });
-
-    try {
-        await Promise.race([scrapeData(), timeoutPromise]);
+        
+        console.log('scraped data:', data.length);
+        return data;
     } catch (error) {
-        console.error('Timeout exceeded:', error);
+        console.error('Error:', error);
+        return [];
     } finally {
         await closeBrowser(browser);
     }
-
-    console.log('scraped data:', data.length);
-    return data;
 }
