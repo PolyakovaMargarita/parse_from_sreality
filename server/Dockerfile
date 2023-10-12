@@ -1,7 +1,4 @@
-ARG NODE_VERSION=18.7.0
-
-
-FROM node:${NODE_VERSION}
+FROM node:current-bullseye
 
 RUN apt-get update && apt-get install -y \
     libnss3\
@@ -16,7 +13,8 @@ RUN apt-get update && apt-get install -y \
     libxrandr2\
     libgbm1\
     libasound2\
-    postgresql-client
+    postgresql-client\
+    make
 
 WORKDIR /app/server
 
